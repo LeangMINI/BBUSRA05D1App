@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -9,20 +10,25 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.BBUSRA05D1App"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".CategoryActivity"
+            android:exported="false"
+            android:label="Add Category"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".SignUpActivity"
+            android:exported="false"
             android:label="Sign Up User"
-            android:parentActivityName=".LoginActivity"
-            android:exported="false" />
+            android:parentActivityName=".LoginActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="false"
-            android:theme="@style/Theme.BBUSRA05D1App_NoActionBar"
-            android:label="Main App" />
+            android:label="Main App"
+            android:theme="@style/Theme.BBUSRA05D1App_NoActionBar" />
         <activity
             android:name=".LoginActivity"
             android:exported="true"
@@ -33,9 +39,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <uses-library
             android:name="org.apache.http.legacy"
-            android:required="false"/>
+            android:required="false" />
     </application>
 
 </manifest>
