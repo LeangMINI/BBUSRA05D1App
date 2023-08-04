@@ -235,6 +235,7 @@
                 android:elevation="12dp"
                 app:cardCornerRadius="8dp">
                 <LinearLayout
+                    android:onClick="store"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
@@ -242,7 +243,7 @@
                     <ImageView
                         android:layout_width="72dp"
                         android:layout_height="72dp"
-                        android:onClick="store"
+
                         android:src="@drawable/icon_category_72"/>
 
                     <TextView
