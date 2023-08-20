@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BBUSRA05D1App</string>
+    <string name="openDrawer">Open Drawer</string>
+    <string name="closeDrawer">Close Drawer</string>
 </resources>

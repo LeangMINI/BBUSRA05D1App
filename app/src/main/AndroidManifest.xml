@@ -15,6 +15,31 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ProductsActivity"
+            android:label="Products"
+            android:parentActivityName=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PopularItemsActivity"
+            android:exported="false"
+            android:label="PopularItems"
+             />
+        <activity
+            android:name=".RecentViewsActivity"
+            android:exported="false"
+            android:label="Recent Views"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".FavoriteItemsActivity"
+            android:exported="false"
+            android:label="Favorite Items"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".NewOrderActivity"
+            android:exported="false"
+            android:label="New Order"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".CategoryActivity"
             android:exported="false"
             android:label="Add Category"

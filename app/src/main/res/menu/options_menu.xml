@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menuOptionsMenu"
+        android:icon="@drawable/baseline_more_vert_24"
+        app:showAsAction="always"
+        android:title="Options Menu" >
+        <menu>
+            <item
+                android:id="@+id/menuNewOrder"
+                android:icon="@drawable/icon_add_shopping_cart_24"
+                android:title="New Order" />
+            <item
+                android:id="@+id/menuFavoriteItems"
+                android:icon="@drawable/icon_baseline_favorite_24"
+                android:title="Favorite Items" />
+            <item
+                android:id="@+id/menuPopularItems"
+                android:icon="@drawable/icon_recommend_24"
+                android:title="Popular Items" />
+            <item
+                android:id="@+id/menuRecentViews"
+                android:icon="@drawable/baseline_preview_24"
+                android:title="Recent Views" />
+        </menu>
+    </item>
+
+</menu>
