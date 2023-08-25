@@ -11,11 +11,17 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
+import com.example.bbusra05d1app.functions.Sessions;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawerLayout;
+    NavigationView nav;
+    Sessions sessions;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +35,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         NavigationView nav = findViewById(R.id.NavigationID);
         nav.setNavigationItemSelectedListener(this);
+
+        // Initialize the Sessions object
+        sessions = new Sessions(this);
+
+        // Set user information in navigation header
+        View headerView = nav.getHeaderView(0); // Get the header view
+        TextView tvHeaderMenuLoginName = headerView.findViewById(R.id.tvHeaderMenuLoginName);
+        TextView tvHeaderMenuLoginEmail = headerView.findViewById(R.id.tvHeaderMenuLoginEmail);
+
+        // Get user information from sessions
+        String userName = sessions.getUserName();
+        String userEmail = sessions.getUserEmail();
+
+        // Set user information in the navigation header
+        tvHeaderMenuLoginName.setText(userName);
+        tvHeaderMenuLoginEmail.setText(userEmail);
+
     }
     public void store(View view) {
         Intent add = new Intent(MainActivity.this, CategoryActivity.class);

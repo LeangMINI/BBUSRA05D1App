@@ -13,12 +13,18 @@
         android:padding="16dp">
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/userImage"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="32dp"
             app:srcCompat="@drawable/icon_account_circle_72" />
+        <Button
+            android:id="@+id/btnSelectImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Select Image" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"

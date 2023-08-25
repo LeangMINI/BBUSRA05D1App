@@ -1,15 +1,23 @@
 package com.example.bbusra05d1app;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import static com.example.bbusra05d1app.R.id.btnSelectImage;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bbusra05d1app.functions.ProgressBarDialog;
 import com.google.android.material.textfield.TextInputEditText;
@@ -25,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -35,11 +44,15 @@ import java.util.concurrent.Executors;
 public class CategoryActivity extends AppCompatActivity {
 
     TextInputEditText txtCategoryName, txtDescription;
-    Button btnSave;
+    Button btnSave, btnSelectImage;
     ProgressBarDialog dialog;
-
+    ImageView imgCategoryImage;
+    Bitmap selectedImageBitmap;
     StringBuffer result;
 
+    private static final int IMAGE_PICK_CODE = 1000;
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +61,15 @@ public class CategoryActivity extends AppCompatActivity {
         txtCategoryName = findViewById(R.id.txtCategoryName);
         txtDescription = findViewById(R.id.txtDescription);
         btnSave = findViewById(R.id.btnSave);
+        btnSelectImage = findViewById(R.id.btnSelectImage);
+        imgCategoryImage = findViewById(R.id.imgCategoryImage);
+
+        btnSelectImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickImageFromGallery();
+            }
+        });
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,22 +105,31 @@ public class CategoryActivity extends AppCompatActivity {
                         try {
                             String url = "http://10.0.2.2/BBUA05D1/store_category.php";
 
-                            //create httpclient
+                            // Create httpclient
                             HttpClient client = new DefaultHttpClient();
-                            //create httppost
+                            // Create httppost
                             HttpPost post = new HttpPost(url);
 
-                            //building post param
-                            List<NameValuePair> param = new ArrayList<NameValuePair>();
+                            // Build post params
+                            List<NameValuePair> param = new ArrayList<>();
                             param.add(new BasicNameValuePair("CategoryName", strCname));
                             param.add(new BasicNameValuePair("Description", strDesc));
 
-                            //Url encoding post data
+                            // Encode image to base64
+                            if (selectedImageBitmap != null) {
+                                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                                selectedImageBitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
+                                byte[] byteArray = byteArrayOutputStream.toByteArray();
+                                String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                                param.add(new BasicNameValuePair("Image", encodedImage));
+                            }
+
+                            // Url encode post data
                             post.setEntity(new UrlEncodedFormEntity(param, "UTF-8"));
 
-                            //finally working http request
+                            // Finally working http request
                             HttpResponse response = client.execute(post);
-                            //read data sent from the server
+                            // Read data sent from the server
                             InputStream is = response.getEntity().getContent();
                             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                             result = new StringBuffer();
@@ -134,7 +165,28 @@ public class CategoryActivity extends AppCompatActivity {
                     }
                 });
             }
-
         });
+    }
+
+    private void pickImageFromGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, IMAGE_PICK_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
+            if (data != null && data.getData() != null) {
+                Uri imageUri = data.getData();
+                try {
+                    selectedImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                    imgCategoryImage.setImageBitmap(selectedImageBitmap);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

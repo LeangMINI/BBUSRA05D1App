@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.bbusra05d1app.functions.ProgressBarDialog;
+import com.example.bbusra05d1app.functions.Sessions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,11 +38,16 @@ public class LoginActivity extends AppCompatActivity {
 
     StringBuffer result;
 
+    Sessions sessions;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
 
+        //create Sessions
+
+        sessions = new Sessions(this);
         txtusername = findViewById(R.id.txtUserName);
         txtpassword = findViewById(R.id.txtUserPassword);
         btnlogin = findViewById(R.id.btnLoginUser);
@@ -66,7 +72,8 @@ public class LoginActivity extends AppCompatActivity {
                 dialog.show();
 
                 ExecutorService service = Executors.newSingleThreadExecutor();
-                Handler handler = new Handler(Looper.getMainLooper());
+               // Handler handler = new Handler(Looper.getMainLooper());
+                Handler handler = new Handler();
                 service.execute(new Runnable() {
                     @Override
                     public void run() {
@@ -127,6 +134,15 @@ public class LoginActivity extends AppCompatActivity {
                                     try {
                                         JSONObject object = new JSONObject(result.toString());
                                         if (object.getInt("success") == 1) {
+
+                                            sessions.SetUserID(object.getInt("UserLoginID"));
+                                            sessions.SetUserName(object.getString("UserLoginName"));
+                                            sessions.SetUserPassword(object.getString("UserPassword"));
+                                            sessions.SetUserFullName(object.getString("UserFullName"));
+                                            sessions.SetUserType(object.getString("UserType"));
+                                            sessions.SetUserEmail(object.getString("UserEmail"));
+                                            sessions.SetUserImage(object.getString("UserImage"));
+
                                             Toast.makeText(LoginActivity.this, object.getString("msg_success"), Toast.LENGTH_LONG).show();
                                             // Navigate to MainActivity after successful login
                                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -140,6 +156,7 @@ public class LoginActivity extends AppCompatActivity {
                                     }
                                 }
                             });
+
 
                         } catch (Exception ex) {
                             ex.printStackTrace();
